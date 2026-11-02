@@ -1,0 +1,217 @@
+/**
+ * custom.css
+ * Styling tambahan untuk animasi UI, tata letak interaktif, dan optimalisasi cetak (print stylesheet).
+ */
+
+@layer utilities {
+  /* Scrollbar kustom */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+/* Transisi halus */
+.fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal backdrop transition */
+.modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Toast alert notification container */
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast-item {
+  pointer-events: auto;
+  min-width: 280px;
+  max-width: 420px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  animation: toastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: all 0.25s ease;
+}
+
+@keyframes toastSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Tombol Jawaban Tactile / Quick Click */
+.option-btn {
+  transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.option-btn:active {
+  transform: scale(0.92);
+}
+
+/* Styling Input Keyboard Cepat (Auto-Advance) */
+.key-auto-input {
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+
+.key-auto-input:focus {
+  background-color: #eef2ff !important;
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25) !important;
+  transform: scale(1.06);
+  z-index: 10;
+}
+
+.keyboard-shortcut-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-family: monospace;
+  font-weight: 700;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  color: #334155;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Print Styling Sheet */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1.2cm 1.5cm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10pt !important;
+  }
+
+  /* Sembunyikan elemen navigasi dan tombol non-cetak */
+  .no-print,
+  nav,
+  header,
+  footer,
+  #toast-container,
+  button,
+  .tab-navigation,
+  .filter-bar {
+    display: none !important;
+  }
+
+  /* Format cetak rekap */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Cetak Lembar Rincian Siswa jika modal sedang aktif */
+  body:has(#student-detail-modal:not(.hidden)) main {
+    display: none !important;
+  }
+
+  body:has(#student-detail-modal:not(.hidden)) #student-detail-modal {
+    display: block !important;
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  body:has(#student-detail-modal:not(.hidden)) #student-detail-modal > div {
+    box-shadow: none !important;
+    max-width: 100% !important;
+    max-height: none !important;
+  }
+
+  /* Default jika modal tidak aktif: sembunyikan modal */
+  #student-detail-modal.hidden {
+    display: none !important;
+  }
+
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  th, td {
+    border: 1px solid #475569 !important;
+    padding: 5px 7px !important;
+    font-size: 9pt !important;
+    color: #0f172a !important;
+  }
+
+  th {
+    background-color: #f1f5f9 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .signature-section {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 32px !important;
+    page-break-inside: avoid;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}
